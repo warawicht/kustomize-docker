@@ -4,6 +4,15 @@ ENV KUBECTL_VER 1.14.0
 
 RUN apk --no-cache add curl gettext
 
+ENV PACKAGES="\
+  py-pip \
+  jq \
+"
+
+RUN apk add --update $PACKAGES \
+  && pip install yq \
+  && rm /var/cache/apk/*
+  
 RUN mkdir /working
 WORKDIR /working
 
