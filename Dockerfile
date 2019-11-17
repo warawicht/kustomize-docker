@@ -7,6 +7,7 @@ RUN apk --no-cache add curl gettext
 ENV PACKAGES="\
   py-pip \
   jq \
+  bash \
 "
 
 RUN apk add --update $PACKAGES \
