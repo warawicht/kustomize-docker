@@ -1,19 +1,16 @@
-FROM alpine:3.8
+FROM mikefarah/yq AS the_yq
+
+FROM alpine:3.9
 ENV KUSTOMIZE_VER 2.0.3
 ENV KUBECTL_VER 1.14.0
 
 RUN apk --no-cache add curl gettext
-
-ENV PACKAGES="\
-  py-pip \
-  jq \
-  bash \
-"
-
-RUN apk add --update $PACKAGES \
-  && pip install yq \
-  && rm /var/cache/apk/*
-  
+COPY --from=the_yq /usr/bin/yq /usr/bin
+RUN chmod a+x /usr/bin/yq
+ENV PACKAGES=" bash tzdata"
+ENV TZ=Asia/Bangkok
+RUN apk add --update $PACKAGES && rm /var/cache/apk/*  
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN mkdir /working
 WORKDIR /working
 
