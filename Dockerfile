@@ -10,9 +10,11 @@ ENV PACKAGES="\
   bash \
 "
 
-RUN apk add --update $PACKAGES \
-  && pip install yq \
-  && rm /var/cache/apk/*
+
+RUN wget https://github.com/mikefarah/yq/releases/download/2.4.1/yq_linux_amd64 && mv yq_linux_amd64 /usr/bin/yq && chmod a+x /usr/bin/yq
+# RUN apk add --update $PACKAGES \
+#   && pip install yq \
+#   && rm /var/cache/apk/*
   
 RUN mkdir /working
 WORKDIR /working
